@@ -1,0 +1,26 @@
+// Stable updates for the current Ubuntu/Zorin release and the kiosk browser.
+// Reboots are exclusively controlled by panelpilot-weekly-reboot.timer.
+APT::Periodic::Enable "1";
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Unattended-Upgrade "1";
+
+#clear Unattended-Upgrade::Allowed-Origins;
+#clear Unattended-Upgrade::Origins-Pattern;
+Unattended-Upgrade::Allowed-Origins {
+    "Ubuntu:${distro_codename}";
+    "Ubuntu:${distro_codename}-security";
+    "Ubuntu:${distro_codename}-updates";
+    "UbuntuESMApps:${distro_codename}-apps-security";
+    "UbuntuESM:${distro_codename}-infra-security";
+    "LP-PPA-zorinos-stable:${distro_codename}";
+    "LP-PPA-zorinos-patches:${distro_codename}";
+    "LP-PPA-zorinos-apps:${distro_codename}";
+    "LP-PPA-zorinos-drivers:${distro_codename}";
+    "Brave Software:stable";
+};
+Unattended-Upgrade::Automatic-Reboot "false";
+Unattended-Upgrade::InstallOnShutdown "false";
+Unattended-Upgrade::OnlyOnACPower "true";
+Unattended-Upgrade::Skip-Updates-On-Metered-Connections "true";
+Unattended-Upgrade::MinimalSteps "true";
+Unattended-Upgrade::DevRelease "false";

@@ -1,0 +1,10 @@
+[Unit]
+Description=Reboot the panel after active package operations finish
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/panelpilot/weekly-reboot.py
+TimeoutStartSec=3700
+UMask=0077
+NoNewPrivileges=yes

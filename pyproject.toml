@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "panelpilot"
+version = "0.2.0"
+description = "Local web management for a Linux Home Assistant kiosk and voice satellite"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["fastapi==0.162.0", "uvicorn==0.54.0"]
+
+[project.optional-dependencies]
+test = ["httpx==0.28.1"]
+
+[project.scripts]
+panelpilot = "panelpilot.__main__:main"
+
+[tool.setuptools.package-data]
+panelpilot = ["static/*", "display/*.py"]
+
+[tool.setuptools.packages.find]
+include = ["panelpilot*"]

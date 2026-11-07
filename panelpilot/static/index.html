@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#102c30"><title>PanelPilot · Webverwaltung</title>
+  <link rel="icon" href="/static/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
+</head>
+<body>
+  <div id="login-view" class="login-shell">
+    <div class="login-intro"><a class="brand" href="/"><img src="/static/mark.svg" alt="" width="40" height="40">PanelPilot<span>LOCAL CONTROL</span></a>
+      <div class="intro-copy"><span class="eyebrow">Ein Zuhause für dein Panel.</span><h1>Ein kleiner Bildschirm.<br>Ganz nach deinem Alltag.</h1><p>Dashboard, Fotos und Sprache.<br>Alles Wichtige an einem Ort.</p></div>
+      <div class="intro-footer"><span class="status-dot"></span>Direkt auf deinem Gerät. Ohne Cloud.</div>
+    </div>
+    <main class="login-card"><span class="eyebrow muted">WEBVERWALTUNG</span><h2>Willkommen zurück.</h2><p>Melde dich an, um dein Panel einzustellen.</p>
+      <form id="login-form"><label for="username">Benutzername</label><input id="username" name="username" autocomplete="username" required maxlength="64" value="admin">
+        <label for="password">Passwort</label><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256">
+        <p id="login-error" role="alert" class="error" hidden></p><button class="primary full" type="submit">Anmelden <span aria-hidden="true">→</span></button>
+      </form><small>Eigener PanelPilot-Zugang · unabhängig von Home Assistant</small>
+    </main>
+  </div>
+  <div id="app-view" class="app-shell" hidden>
+    <aside class="sidebar"><a class="brand" href="#overview"><img src="/static/mark.svg" width="38" height="38" alt="">PanelPilot<span>LOCAL CONTROL</span></a>
+      <span class="nav-caption">DEIN PANEL</span><nav aria-label="Hauptnavigation">
+        <button data-nav="overview" class="selected"><span aria-hidden="true">◫</span>Übersicht</button>
+        <button data-nav="display"><span aria-hidden="true">☀</span>Anzeige & Fotos</button>
+        <button data-nav="storage"><span aria-hidden="true">▧</span>Fotospeicher</button>
+        <button data-nav="updates"><span aria-hidden="true">◷</span>Updates & Neustart</button>
+        <button data-nav="dashboard"><span aria-hidden="true">⌂</span>Home Assistant</button>
+        <button data-nav="voice"><span aria-hidden="true">◉</span>Sprachassistent</button>
+        <button data-nav="access"><span aria-hidden="true">⚿</span>Zugang</button>
+      </nav><div class="sidebar-footer"><span class="status-dot"></span><span>Lokale Verwaltung<small id="version">PanelPilot</small></span></div>
+    </aside>
+    <main class="workspace"><header class="topbar"><span>HOME PANEL <span class="slash">/</span> <span id="breadcrumb">Übersicht</span></span><button id="logout" class="text-button">Abmelden <span aria-hidden="true">↗</span></button></header>
+      <div id="demo-banner" class="notice" hidden>DEMO · Einstellungen wirken nur auf die Vorschau, nicht auf dein Gerät.</div>
+      <div id="message" class="notice" role="status" aria-live="polite" hidden></div>
+      <form id="settings-form" novalidate></form>
+      <section data-view="overview"><div class="page-heading"><div><span class="eyebrow muted">ALLES IM BLICK</span><h1>Dein Panel. Dein Alltag.</h1><p>Ein kurzer Blick auf das, was gerade läuft.</p></div><span class="tag" id="session-tag">Verbindung wird geprüft</span></div>
+        <div class="status-grid">
+          <article class="card status-card"><span class="card-icon" aria-hidden="true">⌂</span><span class="status-label">Home Assistant</span><strong id="kiosk-status">Wird geprüft …</strong><span class="caption">Dein Dashboard</span></article>
+          <article class="card status-card"><span class="card-icon" aria-hidden="true">◉</span><span class="status-label">Sprachassistent</span><strong id="voice-status">Wird geprüft …</strong><span class="caption" id="voice-caption">Unabhängig vom Display</span></article>
+          <article class="card status-card"><span class="card-icon" aria-hidden="true">▧</span><span class="status-label">Ruheanzeige</span><strong id="display-status">Wird geprüft …</strong><span class="caption" id="idle-summary">Nach 5 Minuten</span></article>
+        </div>
+        <div class="overview-grid"><article class="feature-card"><div><span class="eyebrow">FÜR DEN GEMEINSAMEN RAUM</span><h2>Ein Dashboard.<br>Und dazwischen deine Fotos.</h2><p>Lege fest, wann die Diashow beginnt und wie hell sie sein soll. Eine Berührung bringt dich zurück.</p><button class="light-button" data-goto="display">Anzeige einstellen <span aria-hidden="true">→</span></button></div><div class="panel-illustration" aria-hidden="true"><div class="screen-art"><span class="sun"></span><span class="hill back"></span><span class="hill front"></span></div><span class="screen-dot"></span></div></article>
+          <article class="card overview-details"><h3>Aktuelle Einstellungen</h3><dl><div><dt>Dashboard</dt><dd id="url-summary">—</dd></div><div><dt>Helligkeit der Fotos</dt><dd id="brightness-summary">—</dd></div><div><dt>Bildwechsel</dt><dd id="interval-summary">—</dd></div><div><dt>Automatische Drehung</dt><dd id="rotation-summary">—</dd></div></dl></article></div>
+        <p class="quiet-note">Die Sprachsteuerung läuft unabhängig von der Ruheanzeige. Alle Änderungen werden erst mit „Übernehmen“ aktiv.</p>
+      </section>
+      <section data-view="display" hidden><div class="page-heading"><div><span class="eyebrow muted">PASSEND ZU DEINEM RAUM</span><h1>Anzeige & Fotos</h1><p>Hell, wenn du sie brauchst. Dezent, wenn sie wartet.</p></div></div>
+        <div class="two-col"><article class="card"><div class="section-title"><span class="card-icon" aria-hidden="true">☀</span><div><h2>Helligkeit</h2><p>Zwei Werte für zwei Momente.</p></div></div>
+          <label class="range-label" for="dashboard_brightness">Dashboard <output id="dashboard_brightness-value">60 %</output></label><input form="settings-form" data-setting id="dashboard_brightness" type="range" min="1" max="100" step="1"><div class="range-limits"><span>Dezent</span><span>Hell</span></div><p id="brightness-capability" class="helper" hidden>Dieser Bildschirm bietet keine Linux-Helligkeitssteuerung. Die Dashboard-Helligkeit stellst du am Monitor ein; Fotos werden per Software abgedunkelt.</p>
+          <label class="range-label spaced" for="photo_brightness">Diashow <output id="photo_brightness-value">20 %</output></label><input form="settings-form" data-setting id="photo_brightness" type="range" min="1" max="100" step="1"><div class="range-limits"><span>Dezent</span><span>Hell</span></div><p class="helper">Beim Berühren kehrt das Panel zur Dashboard-Helligkeit zurück.</p>
+        </article><article class="card"><div class="section-title"><span class="card-icon" aria-hidden="true">◷</span><div><h2>Wenn es ruhig wird</h2><p>Du bestimmst die Pause.</p></div></div>
+          <label for="idle_mode">Ruheanzeige</label><select form="settings-form" data-setting id="idle_mode"><option value="photos">Foto-Diashow</option><option value="black">Schwarzer Bildschirm</option><option value="off">Dashboard bleibt sichtbar</option></select>
+          <div class="field-row"><div><label for="idle_seconds">Start nach</label><div class="unit-input"><input form="settings-form" data-setting id="idle_seconds" type="number" min="30" max="7200" step="1" required><span>Sekunden</span></div></div><div><label for="slide_seconds">Bildwechsel alle</label><div class="unit-input"><input form="settings-form" data-setting id="slide_seconds" type="number" min="5" max="3600" step="1" required><span>Sekunden</span></div></div></div>
+        </article></div>
+        <article class="card wide-card"><div class="section-title"><span class="card-icon" aria-hidden="true">▧</span><div><h2>Deine Bilder</h2><p>Ein lokaler Ordner oder eine bereits eingebundene Netzwerkfreigabe.</p></div></div>
+          <label for="photo_directory">Pfad zum Bilderordner</label><div class="path-row"><input form="settings-form" data-setting id="photo_directory" type="text" required maxlength="2048" spellcheck="false" placeholder="/srv/panel-photos"><button type="button" class="secondary" id="check-photos">Gespeicherten Ordner prüfen</button></div><p class="helper">JPEG, PNG und WebP · Unterordner und Verknüpfungen werden gelesen. NAS-Vorschaubilder werden übersprungen.</p><button class="text-button" type="button" data-goto="storage">Fotos hochladen oder NAS einrichten →</button><p id="photo-result" class="inline-result" role="status" hidden></p>
+        </article>
+        <article class="card toggle-card"><div><h2>Automatische Drehung</h2><p>Die Anzeige folgt der Haltung des Geräts, wenn ein Orientierungssensor vorhanden ist.</p></div><label class="switch"><input form="settings-form" data-setting id="auto_rotate" type="checkbox" aria-label="Automatische Drehung"><span></span></label></article>
+      </section>
+      <section data-view="storage" hidden><div class="page-heading"><div><span class="eyebrow muted">DEINE ERINNERUNGEN</span><h1>Fotospeicher</h1><p>Direkt hochladen oder einen Fotoordner vom NAS verbinden.</p></div></div>
+        <article class="card"><div class="section-title"><span class="card-icon" aria-hidden="true">↑</span><div><h2>Lokale Fotos</h2><p>Auf dem Panel gespeichert und auch ohne NAS verfügbar.</p></div></div>
+          <div class="upload-zone"><label for="photo-upload">Bilder vom Handy oder Computer auswählen</label><input id="photo-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"><p class="helper">JPEG, PNG, WebP · bis zu 20 MiB und 32 Megapixel pro Bild · insgesamt 1 GiB / 500 Fotos.</p><progress id="upload-progress" max="100" value="0" hidden></progress><p id="upload-result" role="status"></p></div>
+          <div class="storage-actions"><span id="photo-usage" class="helper">Speicher wird geprüft …</span><button class="secondary" id="use-local" type="button">Lokale Fotos als Quelle wählen</button></div>
+          <p id="local-empty" class="quiet-note">Noch keine lokalen Fotos. Wähle oben deine ersten Bilder aus.</p><div id="local-gallery" class="photo-grid"></div>
+        </article>
+        <article class="card"><div class="section-title"><span class="card-icon" aria-hidden="true">▤</span><div><h2>Netzwerkordner per NFS</h2><p>Die Freigabe wird ausschließlich lesend eingebunden.</p></div></div>
+          <p id="nfs-status" class="inline-result" role="status">Systemverwaltung wird geladen …</p>
+          <form id="nfs-form"><fieldset id="nfs-fields" disabled><label class="check-label"><input id="nfs-enabled" type="checkbox"> NFS-Fotoordner aktivieren</label>
+            <div class="field-row"><div><label for="nfs-host">NAS-Hostname oder IP-Adresse</label><input id="nfs-host" type="text" maxlength="253" placeholder="nas.local" spellcheck="false"></div><div><label for="nfs-version">NFS-Version</label><select id="nfs-version"><option value="3">NFS 3</option><option value="4.1">NFS 4.1</option><option value="4.2">NFS 4.2</option></select></div></div>
+            <label for="nfs-export">Exportpfad auf dem NAS</label><input id="nfs-export" type="text" maxlength="1024" placeholder="/volume1/photo/panel" spellcheck="false"><p class="helper">Verwende den NFS-Exportpfad aus der NAS-Verwaltung. Dort muss dieses Panel Lese- und Durchquerungsrechte besitzen. Unterstützt werden Server im privaten IPv4-Heimnetz.</p>
+            <div class="button-row"><button id="nfs-test" type="button" class="secondary">Verbindung testen</button><button type="submit" class="primary">NFS speichern</button><button id="use-nfs" type="button" class="secondary" disabled>NFS als Fotoquelle wählen</button></div>
+          </fieldset></form><p class="helper">„NFS speichern“ richtet die Verbindung ein. Die Fotoquelle wählst du anschließend separat. Lokale Fotos bleiben dabei erhalten.</p>
+        </article>
+      </section>
+      <section data-view="updates" hidden><div class="page-heading"><div><span class="eyebrow muted">LÄUFT IM HINTERGRUND</span><h1>Updates & Neustart</h1><p>Ein fester Rhythmus für dein Panel.</p></div></div>
+        <p id="maintenance-status" class="notice" role="status">Systemverwaltung wird geladen …</p>
+        <form id="maintenance-form"><fieldset id="maintenance-fields" disabled><div class="two-col"><article class="card"><h2>Automatische OS-Updates</h2><p>Stabile System- und Sicherheitsupdates der eingerichteten Ubuntu-/Zorin-Quellen sowie Brave.</p><label class="check-label"><input id="maintenance-enabled" type="checkbox"> Tägliche Updates aktivieren</label><label for="update-time">Installation ab</label><input id="update-time" type="time" required><label class="check-label"><input id="only-ac" type="checkbox"> Nur bei angeschlossenem Netzteil</label><p class="helper">Paketlisten werden 30 Minuten vorher aktualisiert. Beide Läufe können sich um bis zu fünf Minuten verschieben. Getaktete Verbindungen werden ausgelassen.</p></article>
+          <article class="card"><h2>Wöchentlicher Neustart</h2><p>Jede Woche, auch wenn kein Update einen Neustart verlangt.</p><label class="check-label"><input id="reboot-enabled" type="checkbox"> Geplanten Neustart aktivieren</label><div class="field-row"><div><label for="reboot-day">Wochentag</label><select id="reboot-day"><option value="Mon">Montag</option><option value="Tue">Dienstag</option><option value="Wed">Mittwoch</option><option value="Thu">Donnerstag</option><option value="Fri">Freitag</option><option value="Sat">Samstag</option><option value="Sun">Sonntag</option></select></div><div><label for="reboot-time">Uhrzeit</label><input id="reboot-time" type="time" required></div></div><p class="helper">Laufende Paketinstallationen verzögern den Neustart um höchstens eine Stunde; danach wird er ausgelassen. Verpasste Neustarts werden nicht nachgeholt.</p></article></div>
+          <article class="card"><label for="maintenance-timezone">Zeitzone</label><input id="maintenance-timezone" type="text" required maxlength="128" placeholder="Europe/Vienna"><p class="helper">Sommer- und Winterzeit werden automatisch berücksichtigt.</p><button class="primary" type="submit">Zeitplan speichern</button><p class="helper">Speichern löst keinen sofortigen Neustart aus. Ein verpasster Update-Lauf kann nachgeholt werden.</p></article>
+        </fieldset></form><article class="card"><h3>Nächste Termine</h3><dl id="maintenance-next" class="schedule-list"></dl><p class="quiet-note">PanelPilot und Linux Voice Assistant werden separat aktualisiert. Es erfolgt kein automatischer Wechsel der Ubuntu-Hauptversion.</p><p id="snap-note" class="quiet-note" hidden>Chromium wird durch Snap automatisch aktualisiert. Dessen eigener Zeitplan ist unabhängig von diesen APT-Zeiten.</p></article>
+      </section>
+      <section data-view="dashboard" hidden><div class="page-heading"><div><span class="eyebrow muted">DEIN ZENTRALES DASHBOARD</span><h1>Home Assistant</h1><p>Die richtige Adresse für deinen Kiosk.</p></div></div>
+        <article class="card"><div class="section-title"><span class="card-icon" aria-hidden="true">⌂</span><div><h2>Dashboard-Adresse</h2><p>Wird im Vollbildbrowser des Panels geöffnet.</p></div></div><label for="dashboard_url">Home-Assistant-URL</label><input form="settings-form" data-setting id="dashboard_url" type="url" required maxlength="2048" spellcheck="false" placeholder="http://homeassistant.local:8123"><p class="helper">HTTP oder HTTPS, auch mit einem direkten Dashboard-Pfad. Nach einer Änderung startet nur der Panelbrowser neu. Bei einer neuen Adresse kann eine erneute HA-Anmeldung nötig sein.</p></article>
+        <article class="card toggle-card"><div><h2>Dashboard neu laden</h2><p>Startet den Panelbrowser mit der gespeicherten Adresse neu.</p></div><button class="secondary" id="reload-dashboard" type="button">Browser neu starten</button></article>
+      </section>
+      <section data-view="voice" hidden><div class="page-heading"><div><span class="eyebrow muted">EIN WORT GENÜGT</span><h1>Sprachassistent</h1><p>Dein Mikrofon. Deine Entscheidung.</p></div></div>
+        <article class="card toggle-card voice-toggle"><div class="section-title"><span class="card-icon" aria-hidden="true">◉</span><div><h2>Voice Assistant aktivieren</h2><p>Sprachsteuerung und lokale Wakeword-Erkennung.</p></div></div><label class="switch"><input form="settings-form" data-setting id="voice_enabled" type="checkbox" aria-label="Voice Assistant aktivieren"><span></span></label></article>
+        <div class="two-col"><article class="card"><h3>Auch während der Diashow</h3><p>Der Sprachdienst läuft separat. Fotos oder ein dunkler Bildschirm unterbrechen die Sprachsteuerung nicht.</p></article><article class="card"><h3>Aus bedeutet aus</h3><p>Nach dem Übernehmen wird der Sprachdienst beendet. Mikrofonaufnahme und Wakeword-Erkennung bleiben ausgeschaltet, auch nach einem Neustart.</p></article></div>
+        <p class="quiet-note">Sprachpipeline und Antworten stellst du weiterhin in Home Assistant ein. Beim Wechsel zwischen Linux-Benutzern kann der Mikrofonzugriff auf die aktive Panelsitzung warten.</p>
+      </section>
+      <section data-view="access" hidden><div class="page-heading"><div><span class="eyebrow muted">NUR FÜR DICH</span><h1>Zugang</h1><p>Ein eigener Login für deine lokale Webverwaltung.</p></div></div>
+        <article class="card password-card"><h2>Passwort ändern</h2><p>Mindestens 14 Zeichen. Danach meldest du dich mit dem neuen Passwort an.</p><form id="password-form"><label for="current-password">Bisheriges Passwort</label><input id="current-password" type="password" autocomplete="current-password" required><label for="new-password">Neues Passwort</label><input id="new-password" type="password" autocomplete="new-password" minlength="14" maxlength="128" required><label for="repeat-password">Neues Passwort wiederholen</label><input id="repeat-password" type="password" autocomplete="new-password" minlength="14" maxlength="128" required><button class="primary" type="submit">Passwort ändern</button></form></article>
+        <p class="quiet-note">PanelPilot hat einen eigenen Zugang. Dein Home-Assistant-Passwort wird hier nicht gespeichert. Lokale Foto-Vorschauen sind nur nach der Anmeldung sichtbar.</p>
+      </section>
+      <footer class="save-bar" id="save-bar"><div><span class="save-indicator" id="save-indicator"></span><strong id="save-state">Alles gespeichert</strong><span id="save-caption">Änderungen werden gemeinsam übernommen.</span></div><div class="save-actions"><button class="secondary" id="discard" type="button" disabled>Verwerfen</button><button class="primary" type="submit" form="settings-form" id="save" disabled>Übernehmen <span aria-hidden="true">↗</span></button></div></footer>
+    </main>
+  </div>
+</body>
+</html>
