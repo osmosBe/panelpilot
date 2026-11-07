@@ -6,6 +6,9 @@ Login und HTTPS. Keine Cloud, keine externen Schriftarten oder Analyse-Dienste.
 
 ![PanelPilot-Übersicht mit Beispieldaten](docs/desktop.jpg)
 
+## Personal Notes:
+Das Projekt wurde entwickelt, da ich mit bestehenden Lösungen für Android Tablets unzufrieden war, darum habe ich ein altes Yoga 12 Thinkpad zweckentfremdet und KI drauf gejagt. Ich werde das Projekt wahrscheinlich nicht super viel warten und pflegen, aber vielleicht findet es ja noch jemand hilfreich.
+
 ## Was du einstellen kannst
 
 - Helligkeit für Dashboard und Diashow getrennt
