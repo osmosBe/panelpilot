@@ -1,63 +1,71 @@
 # PanelPilot
 
-Eine kleine, lokale Webverwaltung für einen Linux-Touchscreen mit Home-Assistant-Kiosk,
-Foto-Diashow und separatem Linux Voice Assistant. Für Handy und Desktop, mit eigenem
-Login und HTTPS. Keine Cloud, keine externen Schriftarten oder Analyse-Dienste.
+A small, local web interface for managing a Linux touchscreen with a Home Assistant
+kiosk, a photo slideshow, and a separate Linux Voice Assistant. Works on phones and
+desktops, with its own login and HTTPS. No cloud services, external fonts, or analytics.
 
-![PanelPilot-Übersicht mit Beispieldaten](docs/desktop.jpg)
+**Language:** The management dashboard is currently available in German only.
+This README is in English; the detailed guides linked below are currently in German.
 
-## Personal Notes:
-Das Projekt wurde entwickelt, da ich mit bestehenden Lösungen für Android Tablets unzufrieden war, darum habe ich ein altes Yoga 12 Thinkpad zweckentfremdet und KI drauf gejagt. Ich werde das Projekt wahrscheinlich nicht super viel warten und pflegen, aber vielleicht findet es ja noch jemand hilfreich.
+![PanelPilot overview with sample data](docs/desktop.jpg)
 
-## Was du einstellen kannst
+## Personal notes
 
-- Helligkeit für Dashboard und Diashow getrennt
-- Ruhezeit, Bildwechsel und Ruhemodus: Fotos, Schwarz oder Dashboard dauerhaft sichtbar
-- Fotopfad: lokaler Ordner oder bereits eingebundene Netzwerkfreigabe
-- Home-Assistant-URL, einschließlich direktem Dashboard-Pfad
-- Voice Assistant dauerhaft ein/aus, auch über Neustarts hinweg
-- Automatische Bildschirmdrehung und Verwaltungs-Passwort
-- Status der drei Dienste, Foto-Lesetest und gezielter Browserneustart
-- Tägliche OS-Updates, Netzbetrieb-Regel und wöchentlicher Neustart mit frei wählbarer Zeit und Zeitzone
-- NFS-Verbindung testen, lesend einrichten und als Fotoquelle auswählen
-- Fotos vom Handy/Computer hochladen, ansehen und löschen; lokale Galerie ohne NAS
+I started this project because I wasn't happy with the existing solutions for Android
+tablets. So I repurposed an old ThinkPad Yoga 12 and used AI to build this. I probably
+won't spend much time maintaining it, but someone else might find it useful.
 
-Touch, Maus oder Tastatur beenden die Ruheanzeige. Die Sprachsteuerung läuft unabhängig
-weiter. Fotos werden im Hintergrund geladen, vollständig angezeigt und korrekt gedreht.
-Verzeichnissymlinks werden mit Schleifen- und Mengenbegrenzung verfolgt. Synology
-`@eaDir` und `#recycle` bleiben außen vor.
+## What you can configure
 
-## Stand und Voraussetzungen
+- Separate brightness levels for the dashboard and slideshow
+- Idle timeout, slide interval, and idle mode: photos, a black screen, or an always-visible dashboard
+- Photo source: a local folder or an already-mounted network share
+- Home Assistant URL, including a direct dashboard path
+- Voice Assistant on/off, with the setting preserved across restarts
+- Automatic screen rotation and the management password
+- Status of all three services, a photo readability check, and a browser-only restart
+- Daily OS updates, an AC-power-only policy, and a weekly reboot with configurable times and time zone
+- Test and configure a read-only NFS connection and select it as the photo source
+- Upload, view, and delete photos from a phone or computer; use a local gallery without a NAS
 
-**Version 0.2.0** enthält Webverwaltung, Systemhelfer und einen gemeinsamen Installer.
-Getestet auf Zorin OS 18.1 / Ubuntu 24.04, GNOME 46, Wayland und systemd.
-Die Anzeige verwendet GNOMEs IdleMonitor und logind. Ohne `/sys/class/backlight`
-funktioniert die Ruheanzeige mit Software-Abdunklung der Fotos; die Dashboard-Helligkeit
-wird dann am Monitor eingestellt. Andere Desktopumgebungen sind nicht unterstützt.
+Touch, mouse, or keyboard input exits the idle display. Voice control continues
+independently. Photos load in the background, fit fully on screen, and use the correct
+orientation. Directory symlinks are followed with limits on cycles and scan size.
+Synology `@eaDir` and `#recycle` directories are excluded.
 
-Der [gemeinsame Installer](docs/SETUP.md) richtet auf Ubuntu Desktop 24.04 / Zorin 18
-ein eigenes Kioskkonto, Autologin, Energieverwaltung, Browser, Anzeige, optional Voice
-Assistant, Webverwaltung und OS-Wartung ein. Zielarchitekturen sind amd64 und arm64.
-Der vollständige frische Installationsablauf und Raspberry-Pi-Hardware sind noch nicht
-auf einem zweiten Gerät validiert. Ein HA-Login und das Verbinden der Sprachpipeline
-in Home Assistant bleiben einmalige Schritte auf dem Zielsystem.
+## Status and requirements
+
+**Version 0.2.0** includes the web interface, a system helper, and a combined installer.
+Tested on Zorin OS 18.1 / Ubuntu 24.04, GNOME 46, Wayland, and systemd.
+The display uses GNOME's IdleMonitor and logind. Without `/sys/class/backlight`,
+the idle display uses software dimming for photos; dashboard brightness must then be
+adjusted on the monitor. Other desktop environments are not supported.
+
+The [combined installer](docs/SETUP.md) sets up a dedicated kiosk account, automatic
+login, power management, browser, display, optional Voice Assistant, web interface,
+and OS maintenance on Ubuntu Desktop 24.04 / Zorin 18. Target architectures are
+amd64 and arm64. The full fresh-install process and Raspberry Pi hardware have not
+yet been validated on a second device. Signing in to Home Assistant and connecting
+the voice pipeline remain one-time steps on the target system.
 
 ```sh
 sudo python3 scripts/setup.py --install --owner "$USER" \
   --hostname panel.local --url https://homeassistant.example --voice
 ```
 
-Ohne `--install` erfolgt nur eine Prüfung. Ohne `--voice` wird ein Panel ohne Mikrofonfunktion
-installiert. Details: [Ersteinrichtung](docs/SETUP.md), [bestehendes Panel](docs/INSTALLATION.md),
-[Betrieb](docs/OPERATIONS.md), [Architektur](docs/ARCHITECTURE.md).
+Without `--install`, the script only checks the system. Without `--voice`, it installs
+a panel without microphone functionality. See [initial setup](docs/SETUP.md),
+[installation on an existing panel](docs/INSTALLATION.md),
+[operations](docs/OPERATIONS.md), and [architecture](docs/ARCHITECTURE.md).
 
-Ein [OS-Wartungsprofil](docs/MAINTENANCE.md) ist enthalten: tägliche stabile
-unattended-upgrades und ein wöchentlicher Neustart sonntags um 05:00 Uhr mit Schutz
-laufender Paketinstallationen. In Version 0.2 wird es im Webbereich „Updates & Neustart“
-verwaltet. Die Webanwendung bleibt unprivilegiert; ein lokaler Systemdienst führt nur
-die fest definierten Zeitplan- und NFS-Aktionen aus.
+An [OS maintenance profile](docs/MAINTENANCE.md) is included: daily unattended
+upgrades from stable sources and a weekly reboot on Sundays at 05:00, with safeguards
+for running package installations. In version 0.2, this is managed under
+“Updates & Neustart” (Updates & Restart) in the web interface.
+The web application runs without root privileges; a local system service handles
+only the predefined scheduling and NFS actions.
 
-## Demo ohne Hardwareänderungen
+## Demo without hardware changes
 
 ```sh
 python3 -m venv .venv
@@ -65,35 +73,36 @@ python3 -m venv .venv
 .venv/bin/python -m panelpilot serve --demo --port 8765
 ```
 
-Öffne `http://127.0.0.1:8765`. Demo-Zugang: **demo / demo-panelpilot**.
-Die Demo bindet ausschließlich an Loopback, schreibt nur `.demo-state/` und ruft keine
-Paneldienste auf. Die Beispieldaten und das Demo-Passwort werden nie für den echten
-Verwaltungsdienst verwendet.
+Open `http://127.0.0.1:8765`. Demo login: **demo / demo-panelpilot**.
+The demo binds only to loopback, writes only to `.demo-state/`, and does not call
+any panel services. The sample data and demo password are never used for the
+production management service.
 
-## Entwicklung
+## Development
 
 ```sh
 .venv/bin/pip install -e '.[test]'
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-Die Tests verwenden temporäre Dateien und simulierte Dienstaufrufe. Sie decken Login,
-Cookies, CSRF, Origin/Host-Prüfung, Eingabevalidierung, Konflikte zwischen Browsern,
-Passwortwechsel, Dienstzustände, Befehlsquotierung und Rücknahme bei Fehlern ab.
-Die native Anzeige benötigt zusätzlich die im Installationsdokument genannten GTK-Pakete.
+Tests use temporary files and simulated service calls. They cover login, cookies,
+CSRF, origin and host checks, input validation, conflicts between browser sessions,
+password changes, service states, command argument quoting, and rollback on errors.
+The native display also requires the GTK packages listed in the installation guide.
 
-## Veröffentlichen
+## Publishing
 
-Dieses Verzeichnis ist das eigenständige Projekt. Nur seinen Quellstand veröffentlichen,
-nicht den übergeordneten Einrichtungsordner oder eine lokale Installation.
-`scripts/release.py` baut ein Quellarchiv aus einer festen Liste von Projektdateien und
-prüft es auf typische private Laufzeitdaten. Die `.gitignore` schließt virtuelle Umgebung,
-Zertifikate, Passwörter, Demo-Daten und lokale Einstellungen aus.
+This directory is the standalone project. Publish only its source files, not the
+parent setup directory or a local installation.
+`scripts/release.py` builds a source archive from an explicit list of project files
+and checks for private keys and certain GitHub token formats. These checks are
+limited and do not replace a full secret scan. The `.gitignore` excludes the virtual
+environment, certificates, credential files, demo data, and local settings.
 
 ```sh
 python3 scripts/release.py
 ```
 
-MIT-Lizenz. Home Assistant, Linux Voice Assistant und die Python-/GTK-Abhängigkeiten
-sind eigenständige Projekte mit ihren jeweiligen Lizenzen. Es wird kein fremder
-Voice-Assistant-Quellcode mitgeliefert.
+MIT license. Home Assistant, Linux Voice Assistant, and the Python/GTK dependencies
+are separate projects with their own licenses. No third-party Voice Assistant
+source code is bundled.
